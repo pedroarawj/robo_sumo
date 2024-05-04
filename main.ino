@@ -1,149 +1,126 @@
-#define E1M1 8
-#define E2M1 9 
+#define E1M1 8   
+#define E2M1 9
 #define E1M2 10
 #define E2M2 11
+
+#define btn 5
+
+bool estado_botao = 0;
 
 #define pinSenE 13
 #define pinSenD 12
 
-#define ECHO 6 
-#define TRIGGER 7
+#define ECHO 7
+#define TRIGGER 6
 
 unsigned int duracao;
 unsigned int distancia;
 
-const int velocidade;
+bool ligado = false;
+int estadobotao = LOW;
+int ultimoestadobotao = LOW;
 
 void setup() {
+  //MOTORES 
   pinMode(E1M1, OUTPUT);
   pinMode(E2M1, OUTPUT);
-  pinMode(E2M1, OUTPUT);
+  pinMode(E1M2, OUTPUT);
   pinMode(E2M2, OUTPUT);
+
+  //Sensor de linha
+  pinMode(pinSenE, INPUT);
+  pinMode(pinSenD, INPUT);
+
+  //Sensor ultrasonico
+  pinMode(ECHO, INPUT);
+  pinMode(TRIGGER, OUTPUT);
+  
+  pinMode(btn, INPUT);
 }
 
 void loop() {
-  
+  //Sensor ultrassônico
   digitalWrite(TRIGGER, LOW);
-  delayMicroseconds(2);
+  delay(2);
   digitalWrite(TRIGGER, HIGH);
-  delayMicroseconds(10);
+  delay(10);
   digitalWrite(TRIGGER, LOW);
-
   duracao = pulseIn(ECHO, HIGH);
   distancia = duracao * 0.0175;
+
+  //sensor de linha
   bool estadoSensorD = digitalRead(pinSenD);
   bool estadoSensorE = digitalRead(pinSenE);
-  // Andar para frente
-  digitalWrite(E1M1, HIGH);
-  digitalWrite(E2M1, LOW);
-  digitalWrite(E1M2, HIGH);
-  digitalWrite(E2M2, LOW);
-  
-  // Ir para trás
-  /*
-  digitalWrite(E1M1, LOW);
-  digitalWrite(E2M1, HIGH);
-  digitalWrite(E1M2, LOW);
-  digitalWrite(E2M2, HIGH);
 
-  */
 
-  // Parar
-  /*
-  digitalWrite(MOTOR_ESQUERDA_PINO1, LOW);
-  digitalWrite(MOTOR_ESQUERDA_PINO2, LOW);
-  digitalWrite(MOTOR_DIREITA_PINO1, LOW);
-  digitalWrite(MOTOR_DIREITA_PINO2, LOW);
-  */
+  desviar();
+  centro();
+  if (distancia < 25){
+    frente();
+  } else {
+    parar();
+  }
 
-  // Virar p esquerda
-  /*
-  digitalWrite(E1M1, LOW);
-  digitalWrite(E2M1, HIGH);
-  digitalWrite(E1M2, HIGH);
-  digitalWrite(E2M2, LOW);
-  analogWrite(MOTOR_ESQUERDA_PINO1, VELOCIDADE_MINIMA);
-  analogWrite(MOTOR_DIREITA_PINO1, VELOCIDADE_MINIMA);
-  */
-
-  // Virar p direita
-  /*
-  digitalWrite(E1M1, HIGH);
-  digitalWrite(E2M1, LOW);
-  digitalWrite(E1M2, LOW);
-  digitalWrite(E2M2, HIGH);
-  analogWrite(MOTOR_ESQUERDA_PINO1, VELOCIDADE_MINIMA);
-  analogWrite(MOTOR_DIREITA_PINO1, VELOCIDADE_MINIMA);
-  */
 }
 
-/*
-void setup() {
- 
-pinMode(11, INPUT);
-pinMode(12, INPUT);
-pinMode(13, INPUT);
- 
-pinMode(2, INPUT_PULLUP);
- 
-pinMode(5, OUTPUT);
-pinMode(6, OUTPUT);
-pinMode(9, OUTPUT);
-pinMode(10, OUTPUT);
- 
-Serial.begin(9600);
- 
-while (digitalRead(2) == 0) {
-delay(1);
-stop();
-Serial.println("aguardando");
+void tras(){
+  analogWrite(E1M1, 160);
+  analogWrite(E2M1, 0);
+  analogWrite(E1M2, 160);
+  analogWrite(E2M2, 0);
 }
+
+void frente(){
+  analogWrite(E1M1, 0);
+  analogWrite(E1M2, 0);
+  analogWrite(E2M1, 200);
+  analogWrite(E2M2, 200);
 }
- 
-void loop() {
- 
-if (!digitalRead(12) || !digitalRead(13)) {//verifica
-Serial.println("linha detectada");
-stop();
-delay(1);
-re();
-delay(300);
-stop();
-delay(1);
-girar();
-delay(600);
-stop();
+
+void parar(){
+  analogWrite(E1M1, 0);
+  analogWrite(E1M2, 0);
+  analogWrite(E2M1, 0);
+  analogWrite(E2M2, 0);
 }
- 
-frente();
-delay(1);
+
+void esquerda(){
+  analogWrite(E1M1, 140);
+  analogWrite(E2M1, 0);
+  analogWrite(E1M2, 0);
+  analogWrite(E2M2, 140);
 }
-void re() {
-Serial.println("Re");
-analogWrite(5, 0);
-analogWrite(6, 200);
-analogWrite(9, 0);
-analogWrite(10, 200);
+
+void direita(){
+  analogWrite(E1M1, 0);
+  analogWrite(E2M1, 140);
+  analogWrite(E1M2, 140);
+  analogWrite(E2M2, 0);
 }
-void frente() {
-Serial.println("Frente");
-analogWrite(5, 200);
-analogWrite(6, 0);
-analogWrite(9, 200);
-analogWrite(10, 0);
+
+void desviar(){
+  direita();
+  delay(500);
+  frente();
+  delay(700);
 }
-void girar() {
-Serial.println("Girando");
-analogWrite(5, 0);
-analogWrite(6, 200);
-analogWrite(9, 200);
-analogWrite(10, 0);
+
+void centro(){
+  esquerda();
+  delay(900);
+  frente();
+  delay(200);
+  esquerda();
+  delay(800);
+  frente();
+  delay(400);
+  parar();
+  delay(30000);
 }
-void stop() {
-Serial.println("parado");
-analogWrite(5, 0);
-analogWrite(6, 0);
-analogWrite(9, 0);
-analogWrite(10, 0);
- 
-}*\
+
+void atacar(){
+    analogWrite(E1M1, 0);
+    analogWrite(E1M2, 0);
+    analogWrite(E2M1, 200);
+    analogWrite(E2M2, 200);
+}
