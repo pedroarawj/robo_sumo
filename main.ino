@@ -3,10 +3,6 @@
 #define E1M2 10
 #define E2M2 11
 
-#define btn 5
-
-bool estado_botao = 0;
-
 #define pinSenE 13
 #define pinSenD 12
 
@@ -15,10 +11,6 @@ bool estado_botao = 0;
 
 unsigned int duracao;
 unsigned int distancia;
-
-bool ligado = false;
-int estadobotao = LOW;
-int ultimoestadobotao = LOW;
 
 void setup() {
   //MOTORES 
@@ -35,7 +27,6 @@ void setup() {
   pinMode(ECHO, INPUT);
   pinMode(TRIGGER, OUTPUT);
   
-  pinMode(btn, INPUT);
 }
 
 void loop() {
