@@ -15,17 +15,17 @@ Para esse projeto utilizamos:
   
   2 - 1 Ponte H Dupla L298N
   
-  2 - 2 rodas 68mm na traseira do robô e 1 roda livre
+  3 - 2 rodas 68mm na traseira do robô e 1 roda livre
   
-  3 - Dois motores DC, um para cada roda traseira
+  4 - Dois motores DC, um para cada roda traseira
   
-  4 - 1 bateria de 15V
+  5 - 1 bateria de 15V
   
-  5 - Jumpers para as conexões com o arduino mega e a ponte h
+  6 - Jumpers para as conexões com o arduino mega e a ponte h
   
-  6 - 1 Sensor de Distância HC-SR04
+  7 - 1 Sensor de Distância HC-SR04
   
-  7 - 2 Sensores de Linha Infravermelhos TCRT5000
+  8 - 2 Sensores de Linha Infravermelhos TCRT5000
   
 
 Em nossa estratégia principal, priorizamos o desvio inicial, visando evitar os robôs com movimentos menos complexos. Em seguida, buscamos colidir na lateral do robô que estivesse à frente.
